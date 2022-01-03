@@ -27,17 +27,29 @@ async function run() {
         /* -------tutor------ */
         // GET API
         app.get('/tutors', async (req, res) => {
-            const cursor = tutorsCollection.find({});
-            const page = req.query.page;
-            const size = parseInt(req.query.size);
+            const email = req.query.email;
+            const status = req.query.status;
+            let query = {};
+            if (email || status) {
+                console.log(email + " " + status);
+                if (email) {
+                    query = { email: email, status: Boolean(status) };
+                } else {
+                    query = { status: Boolean(status) };
+                }
+            }
+            const cursor = tutorsCollection.find(query);
+            // const page = req.query.page;
+            // const size = parseInt(req.query.size);
             let tutors = [];
             const count = await cursor.count();
-            if (page) {
-                tutors = await cursor.skip(page * size).limit(size).toArray();
-            }
-            else {
-                tutors = await cursor.toArray();
-            }
+            tutors = await cursor.toArray();
+            // if (page) {
+            //     tutors = await cursor.skip(page * size).limit(size).toArray();
+            // }
+            // else {
+            //     tutors = await cursor.toArray();
+            // }
             res.send({
                 count,
                 tutors
@@ -162,6 +174,15 @@ async function run() {
             const user = req.body;
             const filter = { email: user.email };
             const updateDoc = { $set: { role: 'admin' } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        })
+
+        // User Teacher Put Api
+        app.put('/users/teacher', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: 'teacher' } };
             const result = await usersCollection.updateOne(filter, updateDoc);
             res.json(result);
         })
