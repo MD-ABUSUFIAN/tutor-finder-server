@@ -31,11 +31,12 @@ async function run() {
             const status = req.query.status;
             let query = {};
             if (email || status) {
-                console.log(email + " " + status);
+                let myStatus = (status === 'true');
+                console.log(email + " " + myStatus);
                 if (email) {
-                    query = { email: email, status: Boolean(status) };
+                    query = { email: email, status: myStatus };
                 } else {
-                    query = { status: Boolean(status) };
+                    query = { status: myStatus };
                 }
             }
             const cursor = tutorsCollection.find(query);
