@@ -78,6 +78,22 @@ async function run() {
             res.json(result);
         })
 
+        // UPDATE ORDER API
+        app.put('/tutors/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateTutor = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upset: true };
+            const updateDoc = {
+                $set: {
+                    status: updateTutor.status
+                },
+            }
+            const result = await ordersCollection.updateOne(filter, updateDoc, options);
+            // console.log(result);
+            res.json(result);
+        })
+
         /* -------Order------ */
         // POST ORDER API
         app.post('/orders', async (req, res) => {
