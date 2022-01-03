@@ -89,7 +89,7 @@ async function run() {
                     status: updateTutor.status
                 },
             }
-            const result = await ordersCollection.updateOne(filter, updateDoc, options);
+            const result = await tutorsCollection.updateOne(filter, updateDoc, options);
             // console.log(result);
             res.json(result);
         })
