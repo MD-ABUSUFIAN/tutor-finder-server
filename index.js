@@ -156,6 +156,13 @@ async function run() {
         // })
 
         /* -------User------ */
+        // GET User API
+        app.get('/users', async (req, res) => {
+            const cursor = usersCollection.find({});
+            users = await cursor.toArray();
+            res.send(users);
+        })
+
         // user get api
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
